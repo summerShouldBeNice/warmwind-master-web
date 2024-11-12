@@ -11,6 +11,11 @@ const routes = [
         component: () => import('@/views/login/UserLogin.vue'),
         meta: { title: '登录' }
     },
+    {
+        path: '/index',
+        component: () => import('@/layout/LayoutIndex.vue'),
+        meta: { title: '主页' }
+    }
 ]
 
 const router = createRouter({
