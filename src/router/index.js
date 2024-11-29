@@ -7,6 +7,10 @@ import NProgress from 'nprogress';
 // 静态路由
 const routes = [
     {
+      path: '/',
+      redirect: '/index',
+    },
+    {
         path: '/login',
         component: () => import('@/views/login/UserLogin.vue'),
         meta: { title: '登录' }

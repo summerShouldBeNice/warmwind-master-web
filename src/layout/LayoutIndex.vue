@@ -1,26 +1,39 @@
 <script setup>
 import { ref } from 'vue';
-import { MenuFoldOutlined } from '@ant-design/icons-vue'
+import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons-vue'
 const selectedKeys2 = ref(['1']);
 const openKeys = ref(['sub1']);
+const preOpenKeys = ref(['sub1']);
+
+
+const appName = import.meta.env.VITE_APP_NAME;
+
+const collapsed = ref(false);
+
+function toggleCollapsed() {
+  collapsed.value = !collapsed.value;
+  openKeys.value = collapsed.value ? [] : preOpenKeys.value;
+}
 </script>
 
 <template>
   <a-layout class="layout">
-    <a-layout-sider width="280" class="layout__sider">
-      <div class="layout__logo">
+    <a-layout-sider width="280" class="layout__sider" :collapsed="collapsed">
+      <div class="layout__logo" v-if="!collapsed">
         <a-row :gutter="[8,16]" justify="center" class="layout__logo__inner">
           <a-col :span="5">
-            <a-image
+            <img
                 :width="45"
                 src="/logo.png"
             />
           </a-col>
           <a-col :span="14">
-            暖风管理系统
+            {{ appName }}
           </a-col>
           <a-col :span="5">
-              <MenuFoldOutlined style="font-size: 20px" />
+            <a-button type="link" style="margin-bottom: 16px" @click="toggleCollapsed">
+              <MenuFoldOutlined style="font-size: 20px"/>
+            </a-button>
           </a-col>
         </a-row>
       </div>
@@ -28,24 +41,31 @@ const openKeys = ref(['sub1']);
           v-model:selectedKeys="selectedKeys2"
           v-model:openKeys="openKeys"
           mode="inline"
+          :inline-collapsed="collapsed"
       >
+        <a-sub-menu @click="toggleCollapsed" v-if="collapsed">
+          <template #title>
+                <span>
+                  <MenuUnfoldOutlined style="font-size: 20px"/>
+                </span>
+          </template>
+        </a-sub-menu>
         <a-sub-menu key="sub1">
           <template #title>
                 <span>
                   <user-outlined />
-                  subnav 1
+                  <span>生活</span>
                 </span>
           </template>
-          <a-menu-item key="1">option1</a-menu-item>
-          <a-menu-item key="2">option2</a-menu-item>
-          <a-menu-item key="3">option3</a-menu-item>
-          <a-menu-item key="4">option4</a-menu-item>
+          <a-menu-item key="1">相册管理</a-menu-item>
+          <a-menu-item key="2">记事线管理</a-menu-item>
+          <a-menu-item key="3">preview</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="sub2">
           <template #title>
                 <span>
                   <laptop-outlined />
-                  subnav 2
+                  <span>我们</span>
                 </span>
           </template>
           <a-menu-item key="5">option5</a-menu-item>
@@ -57,13 +77,21 @@ const openKeys = ref(['sub1']);
           <template #title>
                 <span>
                   <notification-outlined />
-                  subnav 3
+                  <span>待办</span>
                 </span>
           </template>
           <a-menu-item key="9">option9</a-menu-item>
           <a-menu-item key="10">option10</a-menu-item>
           <a-menu-item key="11">option11</a-menu-item>
           <a-menu-item key="12">option12</a-menu-item>
+        </a-sub-menu>
+        <a-sub-menu key="sub4">
+          <template #title>
+                <span>
+                  <notification-outlined />
+                  <span>ces</span>
+                </span>
+          </template>
         </a-sub-menu>
       </a-menu>
     </a-layout-sider>
@@ -130,5 +158,10 @@ const openKeys = ref(['sub1']);
   &__content-inner {
     padding: 24px;
   }
+}
+
+.ant-menu-item-selected {
+  background-color: #1890ff !important; // 修改背景色
+  color: white !important; // 修改文字颜色
 }
 </style>
