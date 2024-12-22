@@ -8,8 +8,15 @@ const preOpenKeys = ref(['sub1']);
 
 const appName = import.meta.env.VITE_APP_NAME;
 
+/**
+ * 侧边栏缩进
+ * @type {Ref<UnwrapRef<boolean>, UnwrapRef<boolean> | boolean>}
+ */
 const collapsed = ref(false);
 
+/**
+ * 改变侧边栏
+ */
 function toggleCollapsed() {
   collapsed.value = !collapsed.value;
   openKeys.value = collapsed.value ? [] : preOpenKeys.value;
