@@ -1,17 +1,16 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons-vue'
+import TopHeader from "@/components/TopHeader.vue";
+import Content from "@/components/Content.vue";
 const selectedKeys2 = ref(['1']);
 const openKeys = ref(['sub1']);
 const preOpenKeys = ref(['sub1']);
 
-
+// 项目名
 const appName = import.meta.env.VITE_APP_NAME;
 
-/**
- * 侧边栏缩进
- * @type {Ref<UnwrapRef<boolean>, UnwrapRef<boolean> | boolean>}
- */
+// 侧边栏缩进
 const collapsed = ref(false);
 
 /**
@@ -105,7 +104,8 @@ function toggleCollapsed() {
     <a-layout class="layout__content-wrapper">
       <a-layout-content class="layout__content">
         <div class="layout__content-inner">
-          <MenuFoldOutlined />
+            <TopHeader style="position: sticky; top: 0; padding: 0;"/>
+          <Content/>
         </div>
       </a-layout-content>
     </a-layout>
@@ -163,7 +163,7 @@ function toggleCollapsed() {
   }
 
   &__content-inner {
-    padding: 24px;
+    //padding: 24px;
   }
 }
 

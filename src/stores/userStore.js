@@ -3,7 +3,7 @@ import { ref, computed, reactive } from 'vue'
 
 export const useUserStore = defineStore('user', {
     state: () => {
-        user: ref()
+        user: reactive({})
     },
     getters: () => {},
     actions: {

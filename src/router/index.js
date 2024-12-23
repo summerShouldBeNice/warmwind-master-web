@@ -4,7 +4,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from "@/stores/userStore.js";
 import config from "@/config/config.js"
-import NProgress from 'nprogress';
 
 
 // 静态路由
