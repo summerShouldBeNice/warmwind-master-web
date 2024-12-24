@@ -3,7 +3,7 @@
  */
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from "@/stores/userStore.js";
-import config from "@/config/config.js"
+import config from "@/config/system-config.js"
 
 
 // 静态路由

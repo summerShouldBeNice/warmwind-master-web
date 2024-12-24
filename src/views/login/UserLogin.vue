@@ -1,7 +1,13 @@
 <script setup>
 import { ref } from 'vue'
-const value1 = ref()
-const value2 = ref()
+import { GithubOutlined, DingdingOutlined, MobileOutlined } from '@ant-design/icons-vue'
+const username = ref()
+const password = ref()
+const captchaCode = ref()
+
+// 显示微信登录
+function showPhoneLogin() {
+}
 </script>
 
 <template>
@@ -19,13 +25,50 @@ const value2 = ref()
         登录进入后台使用完整功能
       </div>
       <div class="right-form">
-        <a-input v-model:value="value1" placeholder="用户名" style="height: 40px; margin-top: 30px; width: 300px"/>
-        <a-input v-model:value="value2" placeholder="密码" style="height: 40px; margin-top: 30px; width: 300px"/>
-        <a-button type="primary" style="height: 40px; margin-top: 30px; width: 300px">登录</a-button>
+        <a-input v-model:value="username" placeholder="用户名" style="height: 40px; margin-top: 25px; width: 300px"/>
+        <!--<a-input v-model:value="username" placeholder="用户名" style="height: 40px; margin-top: 30px; width: 300px"/>-->
+
+        <!--<a-input v-model:value="username" placeholder="手机号" style="height: 40px; margin-top: 25px; width: 300px"/>-->
+
+        <!--<a-input-password v-model:value="password" placeholder="请输入密码" style="height: 40px; margin-top: 30px; width: 300px"/>-->
+        <a-input-password v-model:value="password" placeholder="请输入密码" style="height: 40px; margin-top: 25px; width: 300px"/>
+
+        <!--<a-input v-model:value="captchaCode" style="width: calc(300px - 100px); height: 40px" />-->
+
+        <!--<a-button/>-->
+
+        <!--<a-input-group compact style="width: 300px; height: 40px; margin-top: 30px">-->
+        <a-input-group compact style="width: 300px; height: 40px; margin-top: 25px">
+          <a-input v-model:value="captchaCode" style="width: calc(300px - 100px); height: 40px" />
+          <a-button type="primary" style="width: 100px; height: 40px">发送验证码</a-button>
+        </a-input-group>
+
+        <!--<a-input-group style="width: 300px; height: 40px; margin-top: 25px">-->
+        <!--  <a-input v-model:value="captchaCode" style="width: 150px; height: 40px" />-->
+        <!--  <a-button type="primary" style="width: 100px; height: 40px; margin-left: 40px">发送验证码</a-button>-->
+        <!--</a-input-group>-->
+
+        <div style="width: 300px; height: 40px; display: flex; justify-content: space-between; margin-top: 20px">
+          <a-input v-model:value="captchaCode" style="width: 160px; height: 40px" />
+          <div style="width: 120px; height: 40px; background-color:#fff; ">
+            1fd4g
+          </div>
+        </div>
+
+
+        <a-button type="primary" style="height: 40px; margin-top: 25px; width: 300px">登录</a-button>
       </div>
       <a-divider />
       <div class="right-group">
-
+        <span>
+          <GithubOutlined  style="font-size: 20px; border: 1px solid #999" />
+        </span>
+        <span>
+          <DingdingOutlined style="font-size: 20px; border: 1px solid #999" />
+        </span>
+        <span>
+          <MobileOutlined style="font-size: 20px; border: 1px solid #999" />
+        </span>
       </div>
     </div>
   </div>
@@ -78,7 +121,8 @@ const value2 = ref()
     border-bottom-right-radius: 25px;
 
     .right-title {
-      margin-top: 35px;
+      //margin-top: 35px;
+      margin-top: 15px;
       height: 20px;
       line-height: 20px;
       text-align: center;
@@ -92,10 +136,22 @@ const value2 = ref()
       align-items: center;
     }
 
-    .right-btn-group {
-      margin-top: 30px;
+    .right-group {
+      //height: 40px;
+      height: 36px;
+      //margin-top: 30px;
       display: flex;
       align-items: center;
+      justify-content: space-around;
+
+      span {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        border-radius: 50%;
+      }
     }
   }
 }
