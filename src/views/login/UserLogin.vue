@@ -1,9 +1,18 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { GithubOutlined, DingdingOutlined, MobileOutlined } from '@ant-design/icons-vue'
+import { getPublicCaptcha } from "@/api/public.js";
+
 const username = ref()
 const password = ref()
-const captchaCode = ref()
+const captcha = ref()
+
+onMounted(() => {
+  getPublicCaptcha().then(res => {
+    // console.log(res.base64)
+    captcha.value = res.base64
+  })
+})
 
 // 显示微信登录
 function showPhoneLogin() {
@@ -26,6 +35,8 @@ function showPhoneLogin() {
       </div>
       <div class="right-form">
         <a-input v-model:value="username" placeholder="用户名" style="height: 40px; margin-top: 25px; width: 300px"/>
+
+        <a-input v-model:value="username" placeholder="手机号" style="height: 40px; margin-top: 25px; width: 300px"/>
         <!--<a-input v-model:value="username" placeholder="用户名" style="height: 40px; margin-top: 30px; width: 300px"/>-->
 
         <!--<a-input v-model:value="username" placeholder="手机号" style="height: 40px; margin-top: 25px; width: 300px"/>-->
@@ -50,8 +61,8 @@ function showPhoneLogin() {
 
         <div style="width: 300px; height: 40px; display: flex; justify-content: space-between; margin-top: 20px">
           <a-input v-model:value="captchaCode" style="width: 160px; height: 40px" />
-          <div style="width: 120px; height: 40px; background-color:#fff; ">
-            1fd4g
+          <div style="width: 120px; height: 40px; background-color:#fff; border: 1px solid rgba(0, 0, 0, 0.1); box-sizing: border-box; border-radius: 6px">
+            <img v-if="captcha" :src="captcha" alt="" style="width: 118px; height: 38px; border-radius: 6px"/>
           </div>
         </div>
 

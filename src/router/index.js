@@ -31,12 +31,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const userStore = useUserStore();
-    console.log("111")
-    console.log(userStore.user)
+    // console.log("111")
+    // console.log(userStore.user)
     userStore.setUser(333)
 
-    console.log("22")
-    console.log(userStore.user)
+    // console.log("22")
+    // console.log(userStore.user)
 
     const isWhitelist = config.routeWhitelist?.includes(to.path)
 
