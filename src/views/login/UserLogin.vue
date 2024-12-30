@@ -1,13 +1,20 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import {ref, onMounted, computed, reactive} from 'vue'
 import { GithubOutlined, DingdingOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { getPublicCaptcha } from "@/api/public.js";
+import { login } from "@/api/auth.js";
+import { generateUUID} from "@/utils/common.js";
 
+const loading = ref(false);
+
+// 登录验证码
 const captchaBase64 = ref()
+
 // 是否是密码登录
 const isPasswordLogin = ref(true)
+
 // 登录表单
-const loginForm = ref({
+const loginForm = reactive({
   username: "",
   password: "",
   phone: "",
@@ -17,29 +24,43 @@ const loginForm = ref({
   loginType: 1,
 })
 
-const switchLoginIcon = computed(() => {
-  return isPasswordLogin.value? MobileOutlined : UserOutlined
-})
-
-const switchLoginTip = computed(() => {
-  return isPasswordLogin.value? '手机号登录' : '账号密码登录'
-})
-
 onMounted(() => {
-  // 获取验证码
-  getPublicCaptcha().then(res => {
-    captchaBase64.value = res.base64
-  })
+  getCaptcha()
 })
+
+function changeCaptcha() {
+  getCaptcha()
+}
 
 // 改变登录方式
 function changeLoginType() {
   isPasswordLogin.value = !isPasswordLogin.value
+  loginForm.loginType = isPasswordLogin.value ? 1 : 2
 }
+
+// 切换登录图标
+const switchLoginIcon = computed(() => {
+  return isPasswordLogin.value? MobileOutlined : UserOutlined
+})
+
+// 切换登录提示
+const switchLoginTip = computed(() => {
+  return isPasswordLogin.value? '手机号登录' : '账号密码登录'
+})
 
 // 获取验证码
 function getCaptcha() {
+  loginForm.captchaKey = generateUUID()
+  getPublicCaptcha(loginForm.captchaKey).then(res => {
+    captchaBase64.value = res.base64
+  })
+}
 
+function submitLogin() {
+  loading.value = true
+  login(loginForm).then(res => {
+    loading.value = false
+  })
 }
 
 const validateMessages = {
@@ -68,6 +89,7 @@ const onFinish = values => {
         暖风后台管理
       </div>
     </div>
+    {{ loginForm }}
     <div class="login-card__right">
       <div class="right-title">
         登录进入后台使用完整功能
@@ -86,15 +108,6 @@ const onFinish = values => {
           <a-input-password v-model:value="loginForm.password" placeholder="请输入密码" class="form-input"/>
         </a-form-item>
 
-        <a-form-item class="form-item">
-          <div class="form-item captcha-wrapper">
-            <a-input v-model:value="loginForm.captcha" placeholder="请输入验证码" class="form-input" style="width: 160px"/>
-            <div class="captcha-wrapper__div">
-              <img v-if="captchaBase64" :src="captchaBase64" alt="" class="captcha-img" />
-            </div>
-          </div>
-        </a-form-item>
-
         <a-form-item class="form-item" v-if="!isPasswordLogin">
           <a-input-group compact class="form-item"  v-if="!isPasswordLogin">
             <a-input v-model:value="loginForm.phoneCaptcha" style="width: 200px; height: 40px" />
@@ -102,7 +115,16 @@ const onFinish = values => {
           </a-input-group>
         </a-form-item>
 
-        <a-button type="primary" style="height: 40px;  width: 300px">登录</a-button>
+        <a-form-item class="form-item">
+          <div class="form-item captcha-wrapper">
+            <a-input v-model:value="loginForm.captcha" placeholder="请输入验证码" class="form-input" style="width: 160px"/>
+            <div class="captcha-wrapper__div">
+              <img v-if="captchaBase64" :src="captchaBase64" alt="" class="captcha-img" @click="changeCaptcha" />
+            </div>
+          </div>
+        </a-form-item>
+
+        <a-button type="primary" style="height: 40px;  width: 300px" @click="submitLogin" :loading="loading">登录</a-button>
       </a-form>
 
       <a-divider style="margin: 15px 0px"/>
@@ -146,6 +168,7 @@ $inputHeight: 40px;
   box-sizing: border-box;
   width: 740px;
   height: 420px;
+
   display: flex;
 
   &__left {
@@ -172,12 +195,13 @@ $inputHeight: 40px;
   &__right {
     width: 370px;
     height: 100%;
-    padding: 15px;
+    padding: 18px;
     background-color: #fff;
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
 
     .right-title {
+      //margin-top: 35px;
       margin-top: 15px;
       height: 20px;
       line-height: 20px;

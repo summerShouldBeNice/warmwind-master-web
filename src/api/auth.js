@@ -1,7 +1,7 @@
 import request from '@/config/axios-config.js';
 
-export async function getPublicCaptcha(value) {
-    const res = await request.get("/sys/public/captcha/" + value);
+export async function login(form) {
+    const res = await request.post("/sys/auth/login", form);
     if (res.data.code === 200) {
         return res.data.data;
     }
